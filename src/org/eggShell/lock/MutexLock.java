@@ -45,15 +45,7 @@ public class MutexLock {
     }
 
     public Mutex getMutexLockObject(String id) {
-        String key = hasKey(id);
-        if(mutexMap.get(key)!=null) {
-            return mutexMap.get(key);
-        }
-        synchronized (MutexLock.class) {
-            Mutex mutex = new Mutex(id);
-            mutexMap.put(key, mutex);
-            return mutex;
-        }
+        return mutexMap.computeIfAbsent(hasKey(id), Mutex::new);
     }
 
 
